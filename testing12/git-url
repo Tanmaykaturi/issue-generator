@@ -1,0 +1,12 @@
+- name: main
+  steps:
+    - - name: clone-repo
+          template: clone-checkout-template
+          arguments:
+            parameters:
+              - name: git-url
+                value: "https://github.com/Tanmaykaturi/issue-generator" # Provide the Git URL
+              - name: git-branch
+                value: "testing-tan" # Provide the branch name
+              - name: git-credentials
+                value: "{{workflow.parameters.git-credentials}}" # Reference workflow parameter or provide directly
