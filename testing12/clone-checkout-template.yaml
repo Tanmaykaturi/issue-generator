@@ -1,0 +1,25 @@
+- name: clone-checkout-template
+  inputs:
+    parameters:
+      - name: git-url
+      - name: git-branch
+      - name: git-credentials
+  container:
+    image: alpine/git
+    command: ["sh", "-c"]
+    args:
+      - |
+        echo "$GIT_CREDENTIALS" > /tmp/credentials
+        git config --global credential.helper "store --file=/tmp/credentials"
+        git clone --branch $GIT_BRANCH $GIT_URL /workspace
+        rm /tmp/credentials
+    env:
+      - name: GIT_URL
+        value: "https://github.com/Tanmaykaturi/issue-generator" # Ensure the URL is correct
+      - name: GIT_BRANCH
+        value: "testing-tan" # Ensure the branch exists
+      - name: GIT_CREDENTIALS
+        valueFrom:
+          secretKeyRef:
+            name: git-secret # Reference the Kubernetes secret
+            key: credentials
